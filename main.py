@@ -6,12 +6,14 @@ import thefuzz
 from thefuzz import process
 import re
 
+#list of properties for fuzzy matching
 property_key = ['4010 SOUTHERN AVE', '114 DARRINGTON SW', '1338 NORTH CAROLINA', 
         '1634 NICHOLSON ST NW', '1657 FOREST PARK DR', '4335 VAN NESS ST', 
         '4617 BROOKFIELD DR','4702 TEAK COURT', '5813 DIX ST', 
         '600 MARKHAM RD', '912 45TH PL', '9270 CHERRY LANE', 
         'UNK']
 
+#text box filler
 instructions = '''
 1. This program assumes CSV columns and header match the home 
     depot raw file.
@@ -31,6 +33,12 @@ Note: Matched names are in new column can be compared to Original
 '''
 
 
+'''
+Funtion: runGui
+Args: none
+returns: none
+Description: Create Gui for application.  Main loop for app
+'''
 def runGUI():
 
     root = Tk()
@@ -65,7 +73,12 @@ def runGUI():
     
     root.mainloop()
 
-
+'''
+Funtion: updatcsv
+Args: str - filename
+returns: none
+Description: opens csv file with filename. puts into dataframe, cleans and formats dataframe
+'''
 def updatecsv(filename):
     #filename='Purchase_History_May-11-2023_2꞉31-PM.csv'
 
@@ -90,21 +103,38 @@ def updatecsv(filename):
      
     print(my_df.head())
 
+
+'''
+Funtion: getfilename
+Args: none
+returns: none
+Description: command for Select file Button.  creates dialog for opening file.  Passes filename to updatecsv function
+'''
 def getfilename():
+    
+    #sets list of file types for dialog
     filetypes = (
         ('CSV', '*.csv'),
         ('All files', '*.*')
     )
 
+    #opens dialog for file selection
     filename = filedialog.askopenfilename(
         title='Open File',
         filetypes=filetypes)
     
-   
+    #call to format file
     updatecsv(filename)
-    
-#write dataframe to excel file
+
+'''
+Funtion: setnewfilename
+Args: none
+returns: none
+Description: #write dataframe to excel file
+'''    
 def setnewfilename():
+    
+    #error catching if a file had not been opened
     try:
         my_df
     except NameError:
@@ -116,6 +146,7 @@ def setnewfilename():
             ('All files', '*.*')
         )
 
+        #open save as dialog
         filename = filedialog.asksaveasfilename(
             title='Open File',
             filetypes=filetypes,
